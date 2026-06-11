@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rombensonn.github.io/avangard-landing/sitemap.xml
