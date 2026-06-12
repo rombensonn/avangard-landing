@@ -1,0 +1,10 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^sitemap\.xml$ sitemap.xml.php [L]
+</IfModule>
+
+<FilesMatch "\.(csv|log)$">
+    Require all denied
+</FilesMatch>

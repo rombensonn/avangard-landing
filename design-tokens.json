@@ -1,0 +1,49 @@
+{
+  "project": "Авангард автосервис",
+  "purpose": "Industrial Liquid Glass landing page for trust, phone conversion, and mobile call-through",
+  "visualLanguage": {
+    "style": "Liquid Glass Design",
+    "mood": "industrial, technical, dark workshop, precise service",
+    "principles": [
+      "full-bleed thematic photography",
+      "translucent glass panels over industrial surfaces",
+      "graphite base with cyan diagnostic light and amber action accents",
+      "desktop-only micro-interactions",
+      "static mobile UI for speed and comfort"
+    ]
+  },
+  "colors": {
+    "body": "#05080b",
+    "body2": "#0a1016",
+    "ink": "#f5f8fb",
+    "text": "#d6e0e8",
+    "muted": "#93a4b1",
+    "glass": "rgba(255, 255, 255, 0.105)",
+    "line": "rgba(228, 241, 255, 0.18)",
+    "brand": "#61d7ff",
+    "brandDeep": "#0b8fb4",
+    "accent": "#ff8a2a",
+    "accentStrong": "#ff6b17",
+    "success": "#33d18f",
+    "danger": "#ff665a"
+  },
+  "typography": {
+    "family": "Inter",
+    "usage": "Inter is the only interface font for headings, body text, controls, phone CTAs, and navigation",
+    "fallback": "Arial, sans-serif"
+  },
+  "radius": {
+    "card": "8px",
+    "control": "8px",
+    "pill": "999px"
+  },
+  "motion": {
+    "desktop": "hover lift, button glare sweep, subtle hero image breathing, pointer-follow glass highlight",
+    "mobile": "animations and smooth scrolling disabled at max-width 760px",
+    "accessibility": "prefers-reduced-motion disables transitions and animations"
+  },
+  "assets": {
+    "hero": "assets/img/avangard-hero-industrial.png",
+    "process": "assets/img/avangard-alignment-process.png"
+  }
+}

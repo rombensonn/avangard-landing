@@ -410,13 +410,13 @@
                     <p class="lead">Авангард помогает с ТО, сход-развалом, ходовой, двигателем, тормозами, охлаждением, выхлопом и запчастями под заказ. Главный сценарий простой: позвонить, описать проблему, согласовать работу и приехать в удобное окно.</p>
 
                     <div class="hero-actions" aria-label="Основные действия">
-                        <a class="btn btn-primary" href="#booking">
-                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
-                            Записаться на ремонт
-                        </a>
-                        <a class="btn btn-secondary" href="tel:+79263538354">
+                        <a class="btn btn-primary" href="tel:+79263538354">
                             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.3 1.3.4 2.6.6 4 .6.7 0 1.2.5 1.2 1.2v3.5c0 .7-.5 1.2-1.2 1.2C10.6 22 2 13.4 2 2.8c0-.7.5-1.2 1.2-1.2h3.5c.7 0 1.2.5 1.2 1.2 0 1.4.2 2.7.6 4 .1.4 0 .8-.3 1.2l-1.6 2.8Z"></path></svg>
-                            Позвонить
+                            +7 (926) 353-83-54
+                        </a>
+                        <a class="btn btn-secondary" href="#call">
+                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            Все телефоны
                         </a>
                     </div>
 
@@ -485,7 +485,7 @@
                 <div class="section-heading narrow">
                     <p class="eyebrow">Быстрый старт</p>
                     <h2>Выберите, что нужно сделать с автомобилем</h2>
-                    <p>Кнопка сразу подставит задачу в форму записи. Если точная причина непонятна, выбирайте ближайший симптом и опишите его в комментарии.</p>
+                    <p>Кнопка подсветит задачу и покажет, что сказать администратору по телефону. Если точная причина непонятна, выбирайте ближайший симптом.</p>
                 </div>
 
                 <div class="quick-grid" aria-label="Популярные услуги">
@@ -609,7 +609,7 @@
                         <p class="eyebrow">Как снижаются риски</p>
                         <h2>Что важно согласовать до ремонта</h2>
                     </div>
-                    <p>Основные страхи клиента - переплата, непонятный срок и сомнение в качестве. Поэтому на странице все действия ведут к звонку или заявке, где можно зафиксировать задачу заранее.</p>
+                    <p>Основные страхи клиента - переплата, непонятный срок и сомнение в качестве. Поэтому на странице все действия ведут к звонку: по телефону проще сразу описать задачу, свободное окно и детали.</p>
                 </div>
 
                 <figure class="process-visual" aria-label="Техническая диагностика и сход-развал">
@@ -747,79 +747,57 @@
             </div>
         </section>
 
-        <section class="section booking-section" id="booking">
-            <div class="container booking-grid">
-                <div class="booking-copy">
-                    <p class="eyebrow">Запись</p>
-                    <h2>Оставьте заявку - администратор уточнит задачу и время визита</h2>
-                    <p>Если вопрос срочный, звонок быстрее. Если удобно описать проблему текстом, заполните форму: заявка сохранится на сайте для обработки администратором.</p>
+        <section class="section call-section" id="call">
+            <div class="container call-grid">
+                <div class="call-copy">
+                    <p class="eyebrow">Звонок</p>
+                    <h2>Позвоните, чтобы записаться на ремонт</h2>
+                    <p>Телефон - самый быстрый путь: администратор уточнит симптом, подскажет свободное окно и сориентирует, какие детали лучше подготовить.</p>
 
                     <div class="callout">
-                        <strong>Что написать в заявке</strong>
-                        <span>Марку авто, симптом, когда удобно приехать, есть ли свои запчасти и нужен ли сход-развал после ремонта.</span>
+                        <strong>Что сказать администратору</strong>
+                        <span data-service-hint>Марку авто, симптом, когда удобно приехать, есть ли свои запчасти и нужен ли сход-развал после ремонта.</span>
                     </div>
                 </div>
 
-                <form class="lead-form" method="post" action="#booking" data-static-form="true" novalidate>
-                    <input type="hidden" name="csrf_token" value="0c9a57699880f6248b579c3842580829db6ae6cc910b6c042799105a448505dc">
-                    <div class="form-hidden" aria-hidden="true">
-                        <label>Сайт <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+                <div class="phone-panel" aria-label="Телефоны для записи на ремонт">
+                    <div class="phone-panel-top">
+                        <span class="status-pill status-closed">
+                            <span aria-hidden="true"></span>
+                            Сегодня уже закрыто                        </span>
+                        <p>Ближайший прием: пт с 09:00</p>
                     </div>
 
-                    
-                    
-                    <div class="field-grid">
-                        <label>
-                            <span>Имя</span>
-                            <input type="text" name="name" value="" autocomplete="name" required>
-                        </label>
+                    <div class="phone-card-list">
+                        <a class="phone-card phone-card-primary" href="tel:+79263538354" aria-label="Позвонить в автосервис Авангард по номеру +7 (926) 353-83-54" data-primary-call="true">
+                            <span class="phone-icon" aria-hidden="true">
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.3 1.3.4 2.6.6 4 .6.7 0 1.2.5 1.2 1.2v3.5c0 .7-.5 1.2-1.2 1.2C10.6 22 2 13.4 2 2.8c0-.7.5-1.2 1.2-1.2h3.5c.7 0 1.2.5 1.2 1.2 0 1.4.2 2.7.6 4 .1.4 0 .8-.3 1.2l-1.6 2.8Z"></path></svg>
+                            </span>
+                            <span>
+                                <small>Главный номер</small>
+                                <strong>+7 (926) 353-83-54</strong>
+                                <em>Быстрая запись и срочные вопросы</em>
+                            </span>
+                        </a>
 
-                        <label>
-                            <span>Телефон</span>
-                            <input type="tel" name="phone" value="" autocomplete="tel" inputmode="tel" placeholder="+7" required>
-                        </label>
+                        <a class="phone-card phone-card-secondary" href="tel:+79037767344" aria-label="Позвонить в автосервис Авангард по номеру +7 (903) 776-73-44">
+                            <span class="phone-icon" aria-hidden="true">
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.3 1.3.4 2.6.6 4 .6.7 0 1.2.5 1.2 1.2v3.5c0 .7-.5 1.2-1.2 1.2C10.6 22 2 13.4 2 2.8c0-.7.5-1.2 1.2-1.2h3.5c.7 0 1.2.5 1.2 1.2 0 1.4.2 2.7.6 4 .1.4 0 .8-.3 1.2l-1.6 2.8Z"></path></svg>
+                            </span>
+                            <span>
+                                <small>Дополнительный номер</small>
+                                <strong>+7 (903) 776-73-44</strong>
+                                <em>Если первый номер занят</em>
+                            </span>
+                        </a>
                     </div>
 
-                    <label>
-                        <span>Услуга или задача</span>
-                        <select name="service" id="service" required>
-                            <option value="">Выберите из списка</option>
-                                                            <option value="Сход-развал" >Сход-развал</option>
-                                                            <option value="Замена масла и фильтров" >Замена масла и фильтров</option>
-                                                            <option value="Диагностика ходовой" >Диагностика ходовой</option>
-                                                            <option value="Ремонт тормозов" >Ремонт тормозов</option>
-                                                            <option value="Замена ГРМ или ремней" >Замена ГРМ или ремней</option>
-                                                            <option value="Чистка форсунок" >Чистка форсунок</option>
-                                                            <option value="Ремонт сцепления" >Ремонт сцепления</option>
-                                                            <option value="Ремонт двигателя" >Ремонт двигателя</option>
-                                                            <option value="Кондиционер или охлаждение" >Кондиционер или охлаждение</option>
-                                                            <option value="Выхлопная система" >Выхлопная система</option>
-                                                            <option value="Сварочные работы" >Сварочные работы</option>
-                                                            <option value="Фаркоп" >Фаркоп</option>
-                                                        <option value="Другая задача" >Другая задача</option>
-                        </select>
-                    </label>
-
-                    <label>
-                        <span>Автомобиль</span>
-                        <input type="text" name="car" value="" placeholder="Например: Ford Focus, 2017">
-                    </label>
-
-                    <label>
-                        <span>Что случилось или что нужно сделать</span>
-                        <textarea name="message" rows="4" placeholder="Кратко опишите симптом, желаемую дату, свои запчасти или вопрос по стоимости"></textarea>
-                    </label>
-
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="consent" value="1"  required>
-                        <span>Согласен на обработку данных для ответа по заявке.</span>
-                    </label>
-
-                    <button class="btn btn-primary btn-wide" type="submit">
-                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
-                        Отправить заявку
-                    </button>
-                </form>
+                    <div class="call-meta" aria-label="Что удобно уточнить по телефону">
+                        <span>Свободное окно</span>
+                        <span>Стоимость до работ</span>
+                        <span>Запчасти под заказ</span>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -891,9 +869,9 @@
     <div class="mobile-cta" aria-label="Быстрые действия">
         <a href="tel:+79263538354">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.3 1.3.4 2.6.6 4 .6.7 0 1.2.5 1.2 1.2v3.5c0 .7-.5 1.2-1.2 1.2C10.6 22 2 13.4 2 2.8c0-.7.5-1.2 1.2-1.2h3.5c.7 0 1.2.5 1.2 1.2 0 1.4.2 2.7.6 4 .1.4 0 .8-.3 1.2l-1.6 2.8Z"></path></svg>
-            Позвонить
+            Позвонить 926
         </a>
-        <a href="#booking">Записаться</a>
+        <a href="tel:+79037767344">Позвонить 903</a>
         <a href="https://yandex.ru/maps/-/CPhtrOk2" target="_blank" rel="noopener">Маршрут</a>
     </div>
 
