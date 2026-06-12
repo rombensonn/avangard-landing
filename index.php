@@ -32,13 +32,15 @@ function next_working_day(array $hours, DateTimeImmutable $now): array
 
         if (!empty($hours[$day]['open'])) {
             return [
-                'label' => $hours[$day]['short'],
+                'label' => $hours[$day]['label'],
+                'short' => $hours[$day]['short'],
                 'open' => $hours[$day]['open'],
+                'close' => $hours[$day]['close'],
             ];
         }
     }
 
-    return ['label' => 'в ближайший рабочий день', 'open' => '09:00'];
+    return ['label' => 'Ближайший рабочий день', 'short' => 'день', 'open' => '09:00', 'close' => '19:00'];
 }
 
 function open_status(array $hours): array
@@ -54,7 +56,7 @@ function open_status(array $hours): array
         return [
             'state' => 'closed',
             'label' => 'Сегодня выходной',
-            'detail' => 'Ближайший прием: ' . $next['label'] . ' с ' . $next['open'],
+            'detail' => 'Ближайший прием: ' . $next['label'] . ' с ' . $next['open'] . ' до ' . $next['close'],
         ];
     }
 
@@ -65,7 +67,7 @@ function open_status(array $hours): array
         return [
             'state' => 'soon',
             'label' => 'Откроется сегодня в ' . $today['open'],
-            'detail' => $today['label'] . ': ' . $today['open'] . '-' . $today['close'],
+            'detail' => $today['label'] . ': с ' . $today['open'] . ' до ' . $today['close'],
         ];
     }
 
@@ -73,7 +75,7 @@ function open_status(array $hours): array
         return [
             'state' => 'open',
             'label' => 'Открыто до ' . $today['close'],
-            'detail' => $today['label'] . ': ' . $today['open'] . '-' . $today['close'],
+            'detail' => $today['label'] . ': с ' . $today['open'] . ' до ' . $today['close'],
         ];
     }
 
@@ -82,7 +84,37 @@ function open_status(array $hours): array
     return [
         'state' => 'closed',
         'label' => 'Сегодня уже закрыто',
-        'detail' => 'Ближайший прием: ' . $next['label'] . ' с ' . $next['open'],
+        'detail' => 'Ближайший прием: ' . $next['label'] . ' с ' . $next['open'] . ' до ' . $next['close'],
+    ];
+}
+
+function status_schedule_tabs(array $status): array
+{
+    $detail = $status['detail'] ?? '';
+
+    if (preg_match('/^Ближайший прием:\s*(.+?)\s+с\s+(.+?)\s+до\s+(.+)$/u', $detail, $matches) === 1) {
+        return [
+            'title' => 'Ближайший прием',
+            'day' => $matches[1],
+            'timeLabel' => 'время',
+            'time' => 'с ' . $matches[2] . ' до ' . $matches[3],
+        ];
+    }
+
+    if (preg_match('/^([^:]+):\s*с\s*(.+?)\s+до\s+(.+)$/u', $detail, $matches) === 1) {
+        return [
+            'title' => 'Сегодня',
+            'day' => $matches[1],
+            'timeLabel' => 'время',
+            'time' => 'с ' . $matches[2] . ' до ' . $matches[3],
+        ];
+    }
+
+    return [
+        'title' => 'Прием',
+        'day' => 'уточните',
+        'timeLabel' => 'по',
+        'time' => 'телефону',
     ];
 }
 
@@ -95,7 +127,7 @@ $business = [
     'address' => 'Красная ул., 0/8, Электросталь',
     'phones' => ['+7 (926) 353-83-54', '+7 (903) 776-73-44'],
     'mapsUrl' => 'https://yandex.ru/maps/-/CPhtrOk2',
-    'description' => 'Автосервис в Электростали: обслуживание, ремонт, сход-развал, шиномонтаж, ходовая, двигатель, тормоза, охлаждение, выхлоп и запчасти под заказ.',
+    'description' => 'Автосервис в Электростали: диагностика перед сметой, согласование работ до ремонта, ТО, сход-развал, ходовая, двигатель, тормоза и запчасти под заказ.',
 ];
 
 $hours = [
@@ -109,6 +141,7 @@ $hours = [
 ];
 
 $status = open_status($hours);
+$statusSchedule = status_schedule_tabs($status);
 
 $serviceGroups = [
     [
@@ -304,20 +337,20 @@ $schema = [
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Автосервис Авангард в Электростали - ремонт, ТО, сход-развал</title>
-    <meta name="description" content="Автосервис Авангард на Красной ул., 0/8 в Электростали: рейтинг 4,9, 692 оценки, ремонт авто, ТО, сход-развал, шиномонтаж, ходовая, двигатель, тормоза. Запись по телефону.">
+    <meta name="description" content="Автосервис Авангард в Электростали: сначала диагностика и понятная смета, потом ремонт. Звонок для записи, уточнения свободного окна и запчастей.">
     <meta name="keywords" content="Авангард автосервис Электросталь, сход-развал Электросталь, ремонт авто Электросталь, замена масла, ремонт ходовой, шиномонтаж">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="<?= e($canonical); ?>">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Автосервис Авангард в Электростали">
-    <meta property="og:description" content="Ремонт и обслуживание авто, сход-развал, ТО, ходовая, двигатель, тормоза. Рейтинг 4,9 по 692 оценкам.">
+    <meta property="og:description" content="Ремонт авто в Электростали: диагностика перед сметой, согласование работ и запись по телефону. Рейтинг 4,9 по 692 оценкам.">
     <meta property="og:url" content="<?= e($canonical); ?>">
     <meta property="og:locale" content="ru_RU">
     <meta name="theme-color" content="#0b6e99">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css?v=liquid-glass-2">
+    <link rel="stylesheet" href="assets/css/styles.css?v=liquid-glass-12">
     <script type="application/ld+json"><?= json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?></script>
 </head>
 <body>
@@ -352,7 +385,8 @@ $schema = [
                 </span>
                 <a class="link-call" href="tel:<?= e(phone_href($business['phones'][0])); ?>">
                     <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.3 1.3.4 2.6.6 4 .6.7 0 1.2.5 1.2 1.2v3.5c0 .7-.5 1.2-1.2 1.2C10.6 22 2 13.4 2 2.8c0-.7.5-1.2 1.2-1.2h3.5c.7 0 1.2.5 1.2 1.2 0 1.4.2 2.7.6 4 .1.4 0 .8-.3 1.2l-1.6 2.8Z"></path></svg>
-                    <?= e($business['phones'][0]); ?>
+                    <span class="link-call-number"><?= e($business['phones'][0]); ?></span>
+                    <span class="link-call-label">Позвонить</span>
                 </a>
             </div>
         </div>
@@ -363,18 +397,22 @@ $schema = [
             <img class="hero-bg" src="assets/img/avangard-hero-industrial.png" alt="" aria-hidden="true" loading="eager">
             <div class="container hero-grid">
                 <div class="hero-copy">
-                    <p class="eyebrow">Автосервис в Электростали на Красной ул., 0/8</p>
-                    <h1>Ремонт авто с понятной стоимостью до начала работ</h1>
-                    <p class="lead">Авангард помогает с ТО, сход-развалом, ходовой, двигателем, тормозами, охлаждением, выхлопом и запчастями под заказ. Главный сценарий простой: позвонить, описать проблему, согласовать работу и приехать в удобное окно.</p>
+                    <p class="eyebrow">Автосервис в Электростали</p>
+                    <h1>Ремонт авто в Электростали без лишних работ</h1>
+                    <p class="lead">Сначала разбираемся в причине, затем согласуем смету и детали. Позвоните, чтобы понять ближайший шаг до приезда в сервис.</p>
 
                     <div class="hero-actions" aria-label="Основные действия">
                         <a class="btn btn-primary" href="tel:<?= e(phone_href($business['phones'][0])); ?>">
-                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.3 1.3.4 2.6.6 4 .6.7 0 1.2.5 1.2 1.2v3.5c0 .7-.5 1.2-1.2 1.2C10.6 22 2 13.4 2 2.8c0-.7.5-1.2 1.2-1.2h3.5c.7 0 1.2.5 1.2 1.2 0 1.4.2 2.7.6 4 .1.4 0 .8-.3 1.2l-1.6 2.8Z"></path></svg>
-                            <?= e($business['phones'][0]); ?>
+                            <span class="btn-icon-soft" aria-hidden="true">
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.8-.4 1.2-.3 1.3.4 2.6.6 4 .6.7 0 1.2.5 1.2 1.2v3.5c0 .7-.5 1.2-1.2 1.2C10.6 22 2 13.4 2 2.8c0-.7.5-1.2 1.2-1.2h3.5c.7 0 1.2.5 1.2 1.2 0 1.4.2 2.7.6 4 .1.4 0 .8-.3 1.2l-1.6 2.8Z"></path></svg>
+                            </span>
+                            <span>Позвонить и записаться</span>
                         </a>
                         <a class="btn btn-secondary" href="#call">
-                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
-                            Все телефоны
+                            <span class="btn-icon-soft" aria-hidden="true">
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                            <span>Все телефоны</span>
                         </a>
                     </div>
 
@@ -443,9 +481,9 @@ $schema = [
         <section class="section pain-section">
             <div class="container">
                 <div class="section-heading narrow">
-                    <p class="eyebrow">Быстрый старт</p>
-                    <h2>Выберите, что нужно сделать с автомобилем</h2>
-                    <p>Кнопка подсветит задачу и покажет, что сказать администратору по телефону. Если точная причина непонятна, выбирайте ближайший симптом.</p>
+                    <p class="eyebrow">С чего начать</p>
+                    <h2>Опишите симптом - подскажем, куда копать</h2>
+                    <p>Стук, перегрев, вибрация, тяга в сторону или плановое ТО: выберите похожую задачу и используйте ее как подсказку для звонка.</p>
                 </div>
 
                 <div class="quick-grid" aria-label="Популярные услуги">
@@ -462,10 +500,10 @@ $schema = [
             <div class="container">
                 <div class="section-heading split">
                     <div>
-                        <p class="eyebrow">Услуги</p>
-                        <h2>Не список на 60 пунктов, а понятные группы работ</h2>
+                        <p class="eyebrow">Что ремонтируем</p>
+                        <h2>Показываем работы по понятным проблемам, не по прайсу</h2>
                     </div>
-                    <p>Так проще понять, подходит ли сервис под вашу задачу, и быстрее объяснить проблему по телефону.</p>
+                    <p>Вы видите не сухой список услуг, а ситуации, с которыми обычно приезжают: ходовая, ТО, двигатель, тормоза, охлаждение, выхлоп.</p>
                 </div>
 
                 <div class="services-grid">
@@ -489,10 +527,10 @@ $schema = [
             <div class="container">
                 <div class="section-heading split light">
                     <div>
-                        <p class="eyebrow">Как снижаются риски</p>
-                        <h2>Что важно согласовать до ремонта</h2>
+                        <p class="eyebrow">Как снижаем риски</p>
+                        <h2>Не начинаем ремонт, пока не понятны причина и смета</h2>
                     </div>
-                    <p>Основные страхи клиента - переплата, непонятный срок и сомнение в качестве. Поэтому на странице все действия ведут к звонку: по телефону проще сразу описать задачу, свободное окно и детали.</p>
+                    <p>На осмотре уточняют, что действительно нужно делать, какие детали понадобятся и сколько это будет стоить до начала работ.</p>
                 </div>
 
                 <figure class="process-visual" aria-label="Техническая диагностика и сход-развал">
@@ -503,6 +541,13 @@ $schema = [
                     </figcaption>
                 </figure>
 
+                <div class="section-heading narrow light trust-heading">
+                    <p class="eyebrow">Почему спокойнее</p>
+                    <h2>Вы понимаете, за что платите, до начала ремонта</h2>
+                    <p>Стоимость, детали, сроки и порядок работ обсуждаются заранее. Если нужны запчасти, их можно согласовать до ремонта.</p>
+                </div>
+
+                <p class="process-group-label">Что согласуем до старта</p>
                 <div class="trust-grid">
                     <?php foreach ($trustItems as $item): ?>
                         <article class="trust-card">
@@ -512,6 +557,7 @@ $schema = [
                     <?php endforeach; ?>
                 </div>
 
+                <p class="process-group-label process-group-label-timeline">Как проходит визит</p>
                 <ol class="timeline" aria-label="Порядок ремонта">
                     <li>
                         <strong>Описываете задачу</strong>
@@ -537,8 +583,9 @@ $schema = [
             <div class="container">
                 <div class="section-heading split">
                     <div>
-                        <p class="eyebrow">Отзывы</p>
-                        <h2>Что клиенты чаще всего отмечают</h2>
+                        <p class="eyebrow">Что говорят клиенты</p>
+                        <h2>В отзывах чаще всего ценят честные объяснения</h2>
+                        <p>Люди отмечают понятные цены, отсутствие лишних услуг, помощь с деталями и готовность показать, что именно сломалось.</p>
                     </div>
                     <div class="rating-summary" aria-label="Рейтинг">
                         <strong><?= e($business['rating']); ?> из 5</strong>
@@ -559,8 +606,8 @@ $schema = [
                 </div>
 
                 <div class="note-box">
-                    <strong>Честная рекомендация перед визитом</strong>
-                    <p>В отзывах есть и редкие замечания по ожиданию или отдельным работам. Чтобы снизить риск недопонимания, заранее согласуйте запись, перечень работ, детали, итоговую стоимость и проверку при выдаче автомобиля.</p>
+                    <strong>Согласуйте не только время, но и порядок проверки</strong>
+                    <p>Назовите симптом, марку авто, срочность и вопрос по деталям. Так меньше риска ждать лишнее или обсуждать стоимость уже после начала работ.</p>
                     <a href="<?= e($business['mapsUrl']); ?>" target="_blank" rel="noopener">Смотреть карточку на Яндекс.Картах</a>
                 </div>
             </div>
@@ -569,9 +616,9 @@ $schema = [
         <section class="section amenities-section">
             <div class="container amenities-grid">
                 <div class="section-heading">
-                    <p class="eyebrow">Для визита</p>
-                    <h2>Условия, которые важны с телефона и на месте</h2>
-                    <p>Перед приездом лучше уточнить свободное окно и наличие нужных деталей. Автоэлектрика, кузовной и малярный ремонт не выделены в карточке услуг, поэтому такие задачи стоит проверять по телефону.</p>
+                    <p class="eyebrow">Перед поездкой</p>
+                    <h2>Уточните детали заранее, чтобы не ехать зря</h2>
+                    <p>По телефону лучше проверить свободное окно, наличие деталей, тип ремонта и способы оплаты. Электрику, кузовной и малярный ремонт стоит уточнять отдельно.</p>
                 </div>
 
                 <div class="amenities-list" aria-label="Особенности сервиса">
@@ -585,9 +632,9 @@ $schema = [
         <section class="section call-section" id="call">
             <div class="container call-grid">
                 <div class="call-copy">
-                    <p class="eyebrow">Звонок</p>
-                    <h2>Позвоните, чтобы записаться на ремонт</h2>
-                    <p>Телефон - самый быстрый путь: администратор уточнит симптом, подскажет свободное окно и сориентирует, какие детали лучше подготовить.</p>
+                    <p class="eyebrow">Быстрая связь</p>
+                    <h2>Позвоните - скажем, с чего начать именно вам</h2>
+                    <p>Не нужно заполнять форму и ждать ответа. По телефону можно сразу обсудить симптом, окно визита, детали и порядок согласования цены.</p>
 
                     <div class="callout">
                         <strong>Что сказать администратору</strong>
@@ -601,7 +648,20 @@ $schema = [
                             <span aria-hidden="true"></span>
                             <?= e($status['label']); ?>
                         </span>
-                        <p><?= e($status['detail']); ?></p>
+                        <div class="schedule-tabs" aria-label="<?= e($statusSchedule['title']); ?>">
+                            <span class="schedule-tab schedule-tab-title">
+                                <small>статус</small>
+                                <strong><?= e($statusSchedule['title']); ?></strong>
+                            </span>
+                            <span class="schedule-tab">
+                                <small>день</small>
+                                <strong><?= e($statusSchedule['day']); ?></strong>
+                            </span>
+                            <span class="schedule-tab">
+                                <small><?= e($statusSchedule['timeLabel']); ?></small>
+                                <strong><?= e($statusSchedule['time']); ?></strong>
+                            </span>
+                        </div>
                     </div>
 
                     <div class="phone-card-list">
@@ -619,11 +679,6 @@ $schema = [
                         <?php endforeach; ?>
                     </div>
 
-                    <div class="call-meta" aria-label="Что удобно уточнить по телефону">
-                        <span>Свободное окно</span>
-                        <span>Стоимость до работ</span>
-                        <span>Запчасти под заказ</span>
-                    </div>
                 </div>
             </div>
         </section>
@@ -631,8 +686,9 @@ $schema = [
         <section class="section contacts-section" id="contacts">
             <div class="container contacts-grid">
                 <div>
-                    <p class="eyebrow">Контакты</p>
-                    <h2>Авангард, Электросталь</h2>
+                    <p class="eyebrow">Где находимся</p>
+                    <h2>Телефоны и маршрут - без лишнего поиска</h2>
+                    <p class="contacts-note">Позвоните перед визитом, чтобы уточнить свободное окно, затем откройте маршрут до сервиса на Красной улице.</p>
                     <address><?= e($business['address']); ?></address>
                     <div class="contact-buttons">
                         <?php foreach ($business['phones'] as $phone): ?>
@@ -658,16 +714,63 @@ $schema = [
                             </div>
                         <?php endforeach; ?>
                     </dl>
-                    <p class="source-note">Данные взяты из карточки Яндекс.Карт. Перед визитом лучше уточнить актуальность по телефону.</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="site-footer">
-        <div class="container footer-grid">
-            <p>© <?= date('Y'); ?> Авангард. Одностраничный сайт автосервиса.</p>
-            <a href="<?= e($business['mapsUrl']); ?>" target="_blank" rel="noopener">Карточка бизнеса на Яндекс.Картах</a>
+    <footer class="site-footer" id="documents">
+        <div class="container footer-shell">
+            <div class="footer-brand-panel">
+                <a class="footer-brand" href="#top" aria-label="Авангард - к началу страницы">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" focusable="false">
+                            <path d="M6 21h20l-3.5-8.5A4 4 0 0 0 18.8 10h-5.6a4 4 0 0 0-3.7 2.5L6 21Z"></path>
+                            <path d="M9 21v3m14-3v3M11 16h10"></path>
+                        </svg>
+                    </span>
+                    <span>
+                        <strong><?= e($business['name']); ?></strong>
+                        <small>Автосервис в Электростали</small>
+                    </span>
+                </a>
+                <p>Запись и срочные вопросы - по телефону. На сайте нет формы заявки, онлайн-оплаты и личного кабинета.</p>
+                <div class="footer-call-row" aria-label="Телефоны автосервиса">
+                    <?php foreach ($business['phones'] as $phone): ?>
+                        <a href="tel:<?= e(phone_href($phone)); ?>"><?= e($phone); ?></a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <nav class="footer-column" aria-label="Разделы сайта">
+                <h2>Разделы</h2>
+                <a href="#services">Услуги</a>
+                <a href="#process">Как работаем</a>
+                <a href="#reviews">Отзывы</a>
+                <a href="#call">Позвонить</a>
+                <a href="#contacts">Контакты</a>
+            </nav>
+
+            <div class="footer-column">
+                <h2>Контакты</h2>
+                <address><?= e($business['address']); ?></address>
+                <span>Пн-пт: 09:00-19:00</span>
+                <span>Сб: 09:00-17:00</span>
+                <span>Вс: выходной</span>
+                <a href="<?= e($business['mapsUrl']); ?>" target="_blank" rel="noopener">Маршрут в Яндекс.Картах</a>
+            </div>
+
+            <nav class="footer-column footer-docs" aria-label="Документы сайта">
+                <h2>Документы</h2>
+                <a href="privacy.html">Политика обработки персональных данных</a>
+                <a href="terms.html">Условия использования сайта</a>
+                <p>Документы учитывают текущий функционал: сайт информирует об услугах и переводит пользователя на звонок.</p>
+            </nav>
+        </div>
+
+        <div class="container footer-bottom">
+            <p>© <?= date('Y'); ?> <?= e($business['name']); ?>. Информация на сайте не является публичной офертой.</p>
+            <a href="#top">Наверх</a>
         </div>
     </footer>
 
@@ -680,6 +783,7 @@ $schema = [
         <a href="<?= e($business['mapsUrl']); ?>" target="_blank" rel="noopener">Маршрут</a>
     </div>
 
-    <script src="assets/js/main.js?v=liquid-glass-2" defer></script>
+    <script src="assets/js/main.js?v=liquid-glass-5" defer></script>
 </body>
 </html>
+
