@@ -1091,7 +1091,7 @@ figure {
     grid-template-columns: 54px minmax(0, 1fr);
     gap: 14px;
     align-items: center;
-    min-height: 108px;
+    min-height: 92px;
     padding: 18px;
     color: #ffffff;
 }
@@ -1110,39 +1110,13 @@ figure {
         linear-gradient(145deg, rgba(97, 215, 255, 0.14), rgba(255, 255, 255, 0.055));
 }
 
-.phone-card > span:last-child {
-    min-width: 0;
-}
-
-.phone-card small,
-.phone-card strong,
-.phone-card em {
-    display: block;
-}
-
-.phone-card small {
-    color: #b7efff;
-    font-size: 0.82rem;
-    font-weight: 900;
-    line-height: 1.2;
-    text-transform: uppercase;
-}
-
 .phone-card strong {
-    margin-top: 4px;
+    min-width: 0;
     color: #ffffff;
     font-size: 1.52rem;
     font-weight: 900;
     line-height: 1.08;
     overflow-wrap: anywhere;
-}
-
-.phone-card em {
-    margin-top: 6px;
-    color: var(--soft);
-    font-style: normal;
-    font-weight: 800;
-    line-height: 1.25;
 }
 
 .phone-icon {
